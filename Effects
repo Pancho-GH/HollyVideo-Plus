@@ -1977,7 +1977,7 @@
 		"syntax": ""
 	},
 	"g major 28": {
-		"code": "invert #\nhueshifthsl # -42\nvegaswave # 0 5.4 0.05 0 0 5.4 0.05 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8, -1, 4, 11\naudioputreplace # #$",
+		"code": "invert #\nhueshifthsl # -42\nvegaswave # -30 10 0.02 1 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8, -1, 4, 11\naudioputreplace # #$",
 		"args": 0,
 		"params": [],
 		"syntax": ""
