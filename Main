@@ -1,0 +1,100 @@
+{set:s|{unix}}
+{if:{argslen}|=|0|then:{embedjson:{"color":6331647,"title":"**HollyVideo Plus v2.7.7**","description":"Last updated on 11/16/2026","author":{"name":"{usertag}","icon_url":"{avatar}"},"footer":{"text":"HollyVideo","icon_url":"https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png"},"timestamp":{unix},"thumbnail":{"url":"https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png"},"fields":[{"name":"**Normal Usage**","value":{jsonify:{code:.t {tagname} <effect> <effect-args> <subcommand> <subcommand-args>}}},{"name":"**Subcommand List**","value":"- `raw <medianame>` - Shows the MediaScript raw code for the effect.\n\n- `ihtx <exports> <export_length> <?no_trim> <?no_audio_break> <export_file_format> <output_file_format>` - Does an IHTX with an effect for a set amount of exports.\n\n- `multiplier <exports> <?no_audio_break> <export_file_format> <output_file_format>` - Does an effect on a source for a set amount of exports.\n\n- `ihtxbuggy <exports> <export_length> <?no_trim> <?no_audio_break> <export_file_format> <output_file_format>` - Adds an offset to each export.\n\n- `ihtxkine <exports> <export_length> <?no_trim> <?no_audio_break> <export_file_format> <output_file_format>` - Adds a Fade In/Out effect like KineMaster.\n\n- `ihtxpgrender <exports> <export_length> <?no_trim> <?no_audio_break> <export_file_format> <output_file_format>` - Adds p&g render to each export.\n\n- `ihtxscfr <exports> <export_length> <?no_trim> <?no_audio_break> <export_file_format> <output_file_format>` - Adds scfr render to each export."},{"name":"**Non-effect Command List**","value":"- `archive` - Shows the archive of the entire tagscript code.\n\n- `list <search>` - Shows a list of all of the effects."}]}}|else:{set:fx|{text:{replace:æ|p|https://æastebin.com/raw/cnBYi4fE}}}
+{set:res|{if:{traversejson:["{lower:{arg:0}}"]|{get:fx}}|!=||then:true|else:false}}
+
+{set:code|{eval:{traversejson:["{lower:{arg:0}}"].code|{get:fx}}}}
+{set:offset|{traversejson:["{lower:{arg:0}}"].args|{get:fx}}}
+
+{set:res2|{includes:{lower:{arg:{math:{get:offset}+1}}}||raw|ihtx|multiplier|ihtxbuggy|ihtxkine|ihtxpgrender|ihtxscfr}}
+
+{if:{arg:0}|~|archive|then:{attachtext:{text:{replace:æ|p|https://æastebin.com/raw/XCDCud0L}}}|else:{if:{arg:0}|~|list|then:{js:let fx = Object.keys(JSON.parse(discord.variables.fx));
+let syntax = Object.values(JSON.parse(discord.variables.fx)).map(x => x.syntax);
+searchVal = '{arg:1}';
+let d = fx.reduce((a, v, i) => {
+   return [...a, {"effect":v,"syntax":syntax[i]}]
+}, [])
+let e = searchVal !== '' ? d.filter(x => eval(`/.*${searchVal}.*/`).test(x.effect)) : d;
+let mCount = 15;
+let pageCount = Math.ceil(e.length/mCount);
+let effectCount = fx.length;
+let pages = [];
+let color = 6331647;
+
+if ( effectCount !== 0 ) {
+   for ( i=0; i<pageCount; i++ ) {
+      pages.push({'embed':{'color':color,'title':searchVal == '' ? `**The Effects List**` : `**Showing effects matching '${searchVal}'**`,'description':e.map((x,i) => `${i+1}. ${x.effect}${x.syntax!==``?`\n> Syntax: \u0060${x.syntax}\u0060`:``}`).slice(i*mCount,i*mCount+mCount).join(`\n`),'footer':{'text':`HollyVideo — Page ${i+1}/${pageCount} (${effectCount} Total Effects) ${searchVal !== '' ? `(${e.length} Search Results)` : ''}`,'icon_url':'https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png'},'timestamp':Date.now(),'author':{'name':'{usertag}','icon_url':'{avatar}'}}})
+   }
+} else {
+   pages.push({'embed':{'color':color,'title':`**No effects matching '${searchVal}'**`,'footer':{'text':`HollyVideo`,'icon_url':'https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png'},'timestamp':Date.now(),'author':{'name':'{usertag}','icon_url':'{avatar}'}}})
+};
+
+console.log(JSON.stringify({pages:pages}))} |else:{if:{get:res2}|=|false|then:{js:console.error(`Invalid subcommand: \`{arg:{math:{get:offset}+1}}\`
+Try fixing your spelling or contact holly to add it`)}|else:
+{if:{get:res}|=|false|then:{js:console.error(`Invalid effect: \`{arg:0}\`
+Try fixing your spelling or contact holly to add it`)}|else:
+{set:exports|{or:{arg:{math:{get:offset}+2}}|10}}
+{set:dur|{or:{arg:{math:{get:offset}+3}}|0.433}}
+{set:notrim|{or:{arg:{math:{get:offset}+4}}|false}}
+{set:noaudiobreak|{or:{arg:{math:{get:offset}+5}}|false}}
+{set:exportformat|{or:{arg:{math:{get:offset}+6}}|default}}
+{set:outputformat|{or:{arg:{math:{get:offset}+7}}|default}}
+
+{set:multiplier_nab|{or:{arg:{math:{get:offset}+3}}|false}}
+{set:multiplier_expformat|{or:{arg:{math:{get:offset}+4}}|default}}
+{set:multiplier_outformat|{or:{arg:{math:{get:offset}+5}}|default}}
+
+{set:nab_code|{replace:audioputreplace # #\$|audionormalize #$ 0
+ffmpeg #$ -af alimiter=2.5:latency=1,highpass=25
+audioputreplace # #$|{get:code}}}
+
+{if:{arg:{math:{get:offset}+1}}|~|raw|then:{embedjson:{"color":6331647,"title":"**Code**","description":{jsonify:{code:{replace:#|{or:{arg:{math:{get:offset}+2}}|#}|{get:code}}}},"author":{"name":"{usertag}","icon_url":"{avatar}"},"footer":{"text":"HollyVideo","icon_url":"https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png"},"timestamp":{unix}}}{attachtext:{replace:#|{or:{arg:{math:{get:offset}+2}}|#}|{get:code}}}|else:{if:{arg:{math:{get:offset}+1}}|~|ihtxscfr|then:{iscriptmaybeurl:load {media} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+get 0 duration vidlen
+repeatduration 0 {get:dur}
+copy 0 _
+ihtx _ {get:exports} {get:dur} notrim={get:notrim} {jsonify:if 0 == 0 {jsonify:{replace:#|_x|{if:{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}
+ffmpeg _x -vf format=rgb32,colormatrix=bt709:bt601}}
+render _ {get:outputformat} hollyvideo}|else:{if:{arg:{math:{get:offset}+1}}|~|ihtxpgrender|then:{iscriptmaybeurl:load {media} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+get 0 duration vidlen
+repeatduration 0 {get:dur}
+copy 0 _
+ihtx _ {get:exports} {get:dur} notrim={get:notrim} {jsonify:if 0 == 0 {jsonify:{replace:#|_x|{if:{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}
+ffmpeg _x -vf format=rgb32,colormatrix=bt601:bt709}}
+render _ {get:outputformat} hollyvideo}|else:{if:{arg:{math:{get:offset}+1}}|~|ihtxkine|then:{iscriptmaybeurl:load {media} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+get 0 duration vidlen
+repeatduration 0 {get:dur}
+copy 0 _
+ihtx _ {get:exports} {get:dur} notrim={get:notrim} {jsonify:if 0 == 0 {jsonify:{replace:#|_x|{if:{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}
+copy _x _x$
+fadein _x$ 1/6
+fadeout _x$ 1/6
+audioputreplace _x _x$}}
+render _ {get:outputformat} hollyvideo}|else:{if:{arg:{math:{get:offset}+1}}|~|ihtxbuggy|then:{iscriptmaybeurl:load {media} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+get 0 duration vidlen
+repeatduration 0 {get:dur}
+copy 0 _
+ihtx _ {get:exports} {get:dur} notrim={get:notrim} {jsonify:if 0 == 0 {jsonify:{if:{replace:#|_x|{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}
+get _x duration d
+repeat _x 2
+snip _x 1/6 d+(1/6)}}
+render _ {get:outputformat} hollyvideo}|else:{if:{arg:{math:{get:offset}+1}}|~|multiplier|then:{iscriptmaybeurl:load {media} 0
+{if:{get:multiplier_expformat}|!=|default|then:convert 0 {get:multiplier_expformat}}
+copy 0 _
+{foreach:{get:exports}|
+if 0 == 0 {jsonify:{replace:#|_|{if:{get:multiplier_nab}|=|true|then:{get:nab_code}|else:{get:code}}}}}
+render _ {get:multiplier_outformat} hollyvideo}|else:{if:{arg:{math:{get:offset}+1}}|~|ihtx|then:{iscriptmaybeurl:load {media} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+get 0 duration vidlen
+repeatduration 0 {get:dur}
+copy 0 _
+ihtx _ {get:exports} {get:dur} notrim={get:notrim} {jsonify:if 0 == 0 {jsonify:{replace:#|_x|{if:{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}}}
+render _ {get:outputformat} hollyvideo}|else:{iscriptmaybeurl:load {if:{indexof:https|{eval:{get:code}}}|!=|-1|then:{media:0}|else:{media}} 0
+{if:{get:exportformat}|!=|default|then:convert 0 {get:exportformat}}
+copy 0 _
+{replace:#|_|{if:{get:noaudiobreak}|=|true|then:{get:nab_code}|else:{get:code}}}
+render _ {get:outputformat} hollyvideo}}}}}}}
+{embedjson:{"author":{"icon_url":"{avatar}","name":"{usertag}"},"color":6331647,"fields":[{"name":"Reminder:","value":"Make sure you use `.t sync+` or `.t sync+ alt` afterwards to make sure the video is synced to the audio."},{"name":"File Size:","value":"{if:{get:__fileSize}|>=|1048576|then:{math:fix({get:__fileSize}/1048576,2)} MB|else:{math:fix({get:__fileSize}/1024,2)} KB}"},{"name":"Debug:","value":"Took {math:fix(({unix}-{get:s})/1000,2)}s to execute, {get:__iterationsRemaining} tagscript operations left"}],"footer":{"text":"HollyVideo","icon_url":"https://file.garden/aTXso15ukD3mnuPI/hollyvideo%20icon%202.png"},"timestamp":{unix},"type":"rich"}}
+}}}}}}
