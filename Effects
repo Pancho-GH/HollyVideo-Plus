@@ -1975,5 +1975,11 @@
 		"args": 0,
 		"params": [],
 		"syntax": ""
+	},
+	"g major 28": {
+		"code": "invert #\nhueshifthsl # -42\vegaswave # -15 10 0.02 1 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8, -1, 4, 11\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
 	}
 }
