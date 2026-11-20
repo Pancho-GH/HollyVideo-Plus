@@ -1,0 +1,1979 @@
+{
+	"normal": {
+		"code": "speed # 1",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"reversed": {
+		"code": "reverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 591": {
+		"code": "invert #\nswaprgba # bgr\nhueshifthsl # -144\nswirl # 110\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion": {
+		"code": "invertlab # 1 0 0\nhaah #\naudioreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion hsl": {
+		"code": "invert #\nhueshifthsl # 180\nhaah #\naudioreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major": {
+		"code": "invert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,-5,0,4,7,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 1": {
+		"code": "invert #\nhueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 2": {
+		"code": "invertrgba # 1 1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,4,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 5": {
+		"code": "invertrgba # 0 1 1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 7": {
+		"code": "invert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 16": {
+		"code": "invert #\nhueshifthsl # -140\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"luig group": {
+		"code": "hueshifthsl # -45\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mari group": {
+		"code": "hueshifthsl # 45\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"custom": {
+		"code": "{eval:{arg:1}}",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<...code>"
+	},
+	"pipe": {
+		"code": "{foreach:{js:let args = `{arg:1}`;\n\nfunction inSingleQuotes(str) {\n   return /'.*'/.test(str)\n};\n\nlet split = args.split(`;`).map(effect => effect.trim());\n\nlet effects = split.map(effect => effect.replace(/:.*/g,``).toLowerCase());\n\nlet params = split.map(param => param.split(`: `)[1]).map(param => param ?? '').map(param => inSingleQuotes(param) ? param.split(`'`).filter(x => !(x == '' || x == ' ')) : param.split(` `));\n\nlet parsed = effects.reduce((a, v, i) => {\n   return {...a, [v]: {\"name\":v,\"args\":params[i]}}\n}, {});\n\nconsole.log(JSON.stringify(parsed))}|\n{set:code|{traversejson:[\"{traversejson:name|{get:valuex}}\"].code|{get:fx}}}{foreach:{traversejson:[\"{traversejson:name|{get:valuex}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:name|{get:valuex}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:args|{get:valuex}}}|{get:code}}}}{if:{get:code}|=||then:\n{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:{eval:{get:code}}\n}}",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "\"<effect>: <effect args>; ...\""
+	},
+	"effects": {
+		"code": "{set:a|{js:let args = `{arg:1}`;\n\nfunction inSingleQuotes(str) {\n   return /'.*'/.test(str)\n};\n\nlet split = args.split(`;`).map(effect => effect.trim());\n\nlet effects = split.map(effect => effect.replace(/:.*/g,``).toLowerCase());\n\nlet params = split.map(param => param.split(`: `)[1]).map(param => param ?? '').map(param => inSingleQuotes(param) ? param.split(`'`).filter(x => !(x == '' || x == ' ')) : param.split(` `));\n\nlet parsed = effects.reduce((a, v, i) => {\n   return {...a, [i]: {\"name\":v,\"args\":params[i]}}\n}, {});\n\nconsole.log(JSON.stringify(parsed))}}\n{foreach:{get:a}|\n{set:code|{traversejson:[\"{traversejson:name|{get:valuex}}\"].code|{get:fx}}}\n{foreach:{traversejson:[\"{traversejson:name|{get:valuex}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:name|{get:valuex}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:args|{get:valuex}}}|{get:code}}}}\n{if:{get:code}|=||then:\n{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:copy # #{math:{get:idx}+1}\n{eval:{replace:#|#{math:{get:idx}+1}|{get:code}}}\n}}\nconcatmultiple # {foreach:{get:a}|#{math:{get:idx}+1} {ignore}}\n{if:{or:{arg:2}|false}|=|true|then:snip # 0d}",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "\"<effect>: <effect args>; ...\" ?<remove_normal>"
+	},
+	"multirender": {
+		"code": "copy # #0\n{set:a|{js:let args = `{arg:1}`;\n\nfunction inSingleQuotes(str) {\n   return /'.*'/.test(str)\n};\n\nlet split = args.split(`;`).map(effect => effect.trim());\n\nlet effects = split.map(effect => effect.replace(/:.*/g,``).toLowerCase());\n\nlet params = split.map(param => param.split(`: `)[1]).map(param => param ?? '').map(param => inSingleQuotes(param) ? param.split(`'`).filter(x => !(x == '' || x == ' ')) : param.split(` `));\n\nlet parsed = effects.reduce((a, v, i) => {\n   return {...a, [i]: {\"name\":v,\"args\":params[i]}}\n}, {});\n\nconsole.log(JSON.stringify(parsed))}}\n{foreach:{get:a}|\n{set:code|{traversejson:[\"{traversejson:name|{get:valuex}}\"].code|{get:fx}}}\n{foreach:{traversejson:[\"{traversejson:name|{get:valuex}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:name|{get:valuex}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:args|{get:valuex}}}|{get:code}}}}\n{if:{get:code}|=||then:\n{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:copy #{get:idx} #{math:{get:idx}+1}\n{eval:{replace:#|#{math:{get:idx}+1}|{get:code}}}\n}}\nconcatmultiple # {foreach:{get:a}|#{math:{get:idx}+1} {ignore}}\n{if:{or:{arg:2}|false}|=|true|then:snip # 0d}",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "\"<effect>: <effect args>; ...\" ?<remove_normal>"
+	},
+	"split": {
+		"code": "copy # ##\nget # width w\nget # height h\n{set:parsed|{js:let args1 = `{arg:1}`;\nlet args2 = `{arg:2}`;\n\nfunction inSingleQuotes(str) {\n   return /'.*'/.test(str)\n};\n\nlet split = [args1.trim(),args2.trim()];\n\nlet effects = split.map(effect => effect.replace(/:.*/g,``).toLowerCase());\n\nlet params = split.map(param => param.split(`: `)[1]).map(param => param ?? '').map(param => inSingleQuotes(param) ? param.split(`'`).filter(x => !(x == '' || x == ' ')) : param.split(` `));\n\nlet parsed = Object.values(effects.reduce((a, v, i) => {\n   return {...a, [v]: {\"name\":v,\"args\":params[i]}}\n}, {}));\n\nconsole.log(JSON.stringify(parsed))}}{set:code|{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].code|{get:fx}}}{foreach:{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:[0].args|{get:parsed}}}|{get:code}}}}{if:{get:code}|=||then:{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:{eval:{get:code}}}\n{set:code|{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].code|{get:fx}}}{foreach:{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:[1].args|{get:parsed}}}|{get:code}}}}{if:{get:code}|=||then:{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:{replace:#|##|{eval:{get:code}}}}\ncontain # w h\ncrop # w/2 h 0 0\ncontain ## w h\ncrop ## w/2 h w 0\njoin # ##\nvolume #",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "\"<effect 1>: <effect 1 args>\" \"<effect 2>: <effect 2 args>\""
+	},
+	"vertical split": {
+		"code": "copy # ##\nget # width w\nget # height h\n{set:parsed|{js:let args1 = `{arg:1}`;\nlet args2 = `{arg:2}`;\n\nfunction inSingleQuotes(str) {\n   return /'.*'/.test(str)\n};\n\nlet split = [args1.trim(),args2.trim()];\n\nlet effects = split.map(effect => effect.replace(/:.*/g,``).toLowerCase());\n\nlet params = split.map(param => param.split(`: `)[1]).map(param => param ?? '').map(param => inSingleQuotes(param) ? param.split(`'`).filter(x => !(x == '' || x == ' ')) : param.split(` `));\n\nlet parsed = Object.values(effects.reduce((a, v, i) => {\n   return {...a, [v]: {\"name\":v,\"args\":params[i]}}\n}, {}));\n\nconsole.log(JSON.stringify(parsed))}}{set:code|{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].code|{get:fx}}}{foreach:{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:[0].name|{get:parsed}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:[0].args|{get:parsed}}}|{get:code}}}}{if:{get:code}|=||then:{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:{eval:{get:code}}}\n{set:code|{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].code|{get:fx}}}{foreach:{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].args|{get:fx}}|{set:code|{replace:{traversejson:[{get:idx}]|{traversejson:[\"{traversejson:[1].name|{get:parsed}}\"].params|{get:fx}}}|{traversejson:[{get:idx}]|{traversejson:[1].args|{get:parsed}}}|{get:code}}}}{if:{get:code}|=||then:{js:console.error(`Invalid effect: \\`{traversejson:name|{get:valuex}}\\`\\nTry fixing your spelling or contact holly to add it`)}|else:{replace:#|##|{eval:{get:code}}}}\ncontain # w h\ncrop # w h/2 0 0\ncontain ## w h\ncrop ## w h/2 0 h\njoin # ## true\nvolume #",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "\"<effect 1>: <effect 1 args>\" \"<effect 2>: <effect 2 args>\""
+	},
+	"split pitch": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,{arg:1}\naudioputreplace # #$",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<pitch>"
+	},
+	"g major 25": {
+		"code": "hueshifthsl # -54\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,-8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"split 2 pitches": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ {arg:1},{arg:2}\naudioputreplace # #$",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "<pitch 1> <pitch 2>"
+	},
+	"haha major": {
+		"code": "slide # 0.333333 left\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1.5,1.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"haha major 3.0": {
+		"code": "slide # 0.333333 up\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3.5,3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion reversed": {
+		"code": "invertlab # 1 0 0\nhaah #\nreverse # false",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion reversed hsl": {
+		"code": "invert #\nhueshifthsl # 180\nhaah #\nreverse # false",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"does respond": {
+		"code": "hueshifthsl # -45\ncopy # #2\ncrop #2 #2w*0.7 #2h*0.7 (#2w*(1-0.7))/2 0\nswirl #2 -100\noverlay # #2 (#w-#2w)/2 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"does respond common": {
+		"code": "hueshifthsl # -45\nswirl # -80\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"does not respond": {
+		"code": "hueshifthsl # 45\ncopy # #2\ncrop #2 #2w*0.7 #2h*0.7 (#2w*(1-0.7))/2 0\nswirl #2 100\noverlay # #2 (#w-#2w)/2 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"does not respond common": {
+		"code": "hueshifthsl # 45\nswirl # 80\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 4": {
+		"code": "gradientmap # rgba(0,0,0,0),0.5 black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"real g major 4": {
+		"code": "huecurvergba # all 0 1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 591": {
+		"code": "invert #\nswaprgba # bgr\nhueshifthsl # 35\nswirl # -110\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"blue highers": {
+		"code": "swaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"green lowers": {
+		"code": "swaprgba # grb\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"amtve major": {
+		"code": "hueshifthsl # 180\nhooh #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 88": {
+		"code": "gradientmap # rgb(255,75,255) rgb(0,25,75) black\nswirl # -50\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4,3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ambers g major 1": {
+		"code": "invert #\nhueshifthsl # 180\nswirl # -3\nhaah #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"pitch": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ {arg:1}\naudioputreplace # #$",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": ""
+	},
+	"e major 16": {
+		"code": "gold #\ninvert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"x major 159": {
+		"code": "gradientmap # white magenta black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 302": {
+		"code": "rotate # 180\ninvertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-20\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 91": {
+		"code": "swaprgba # bgr\nhueshifthsl # 180\nhaah #\nresize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 74": {
+		"code": "pinchpunch # 0.5\ninvertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,9,14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 91": {
+		"code": "swaprgba # bgr\nwaaw #\nresize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"crying x": {
+		"code": "invert #\nhueshifthsl # -130\nvegaswave # 0 0 0 0 0 9.9 0.04 0.8\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"sad x": {
+		"code": "invert #\nhueshifthsl # -135\nvegaswave # 0 0 0 0 0 5 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"low pinch": {
+		"code": "pinchpunch # -1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"i killed x": {
+		"code": "pinchpunch # 1\nhueshifthsl # -140\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"getting faster": {
+		"code": "get # duration vd\nspeed # 2\nrepeat # 2\ncopy # #$\nconvert #$ audio/flac\nget #$ duration ad\nspeed #$ ad/vd\nrepeatduration #$ vd\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"getting slower": {
+		"code": "get # duration vd\nspeed # 0.5\nsnip # 0 vd\ncopy # #$\nconvert #$ audio/flac\nget #$ duration ad\nspeed #$ ad/vd\nrepeatduration #$ vd\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"low voice": {
+		"code": "hueshiftyiq # 180\nhaah #\nspeed # 2**(-5/12) true",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"low voice hsl": {
+		"code": "hueshifthsl # 180\nhaah #\nspeed # 2**(-5/12) true",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"slow voice": {
+		"code": "hueshifthsl # 120 100\nwaaw #\nspeed # 2**(-3/12) true",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 4": {
+		"code": "gradientmap # white rgba(0,0,0,0),0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 2": {
+		"code": "invertrgba # 0 0 1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-4,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 5": {
+		"code": "invertrgba # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 19": {
+		"code": "swaprgba # bgr\nhueshifthsl # 180\nhaah #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 134": {
+		"code": "swaprgba # bgr\nhaah #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 6": {
+		"code": "acid # 0 2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 8": {
+		"code": "acid # 0 2\ninvert #\nhueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 18": {
+		"code": "hueshifthsl # 0 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 15": {
+		"code": "vegaswave # 0 0 0 0 0 9.9 0.04 0.8\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,5\naudiodistortion #$ 100\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"91-dxi": {
+		"code": "invert #\nhueshifthsl # 70 100\nshake # 0 10 true\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 0": {
+		"code": "hueshifthsl # 180\ninvert #\nhuecurvergba # all 0 1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,0,10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"rj kumars g major 9": {
+		"code": "invert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"haha major 2.0": {
+		"code": "slide # 0.333 left\nslide # 0.333 up\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2.5,2.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"happy x": {
+		"code": "invert #\nhueshifthsl # 180\nvegaswave # 0 0 0 0 0 6.28 0.113 1.196\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"diamond major": {
+		"code": "hueshifthsl # 18\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"not scary": {
+		"code": "hueshifthsl # 180\nwaaw #\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"not scary rounded pitch": {
+		"code": "hueshifthsl # 180\nwaaw #\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"pika major": {
+		"code": "hueshiftyiq # 24.69\nhueshiftccs # 0 3\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7,0,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 225": {
+		"code": "hueshifthsl # 180\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 225": {
+		"code": "swaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 4,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"tacoma major": {
+		"code": "invertlab # 1 0 0\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-24\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"simulator v19": {
+		"code": "invert #\nhueshifthsl # -70\nvegaswave # 0 4 0.05 0 0 4 0.05 0\nvegaswave # 0 4 0.05 0 0 4 0.05 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,0,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 20": {
+		"code": "invert #\nhueshifthsl # 70 100\nhueshiftrgb # 30 -50 30\nflop #\nvegaswave # 5 1 0.02 0 0 0 0 0\nvegaswave # 0 0 0 0 5 1 0.02 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"original g major 20": {
+		"code": "copy # #2\nhueshifthsl #2 -36\ncrop # 0w/2 0h\ncrop #2 0w/2 0h 0w\njoin # #2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"chordeds g major 10": {
+		"code": "waaw #\nswirl # -100\nhueshifthsl # 120 50\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3,-4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 90": {
+		"code": "hueshifthsl # -45\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"multiplied effect": {
+		"code": "resize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"divided effect": {
+		"code": "swaprgba # bgr\nflop #\nresize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ambers g amjor 2": {
+		"code": "invertrgba # 0 1 0\nswaprgba # gbr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 23": {
+		"code": "hueshifthsl # -140\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3,-3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor": {
+		"code": "hueshifthsl # 180\ninvertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12,5,0,-4,-7,-12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 64": {
+		"code": "swaprgba # rbg\nflop #\nresize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 51": {
+		"code": "invert #\nhueshifthsl # 150\nflop #\nvegaswave # 20 10 0.01 0 0 0 0 0\nvegaswave # 0 0 0 0 20 10 0.01 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"too ruins tree": {
+		"code": "pinchpunch # 1\nswaprgba # rbg\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"rotation wave": {
+		"code": "foreachframe # 0 #fc \"rotate #x (180*(idx/#fc)) none true\"\nvegaswave # 0 2 0.1 0 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wavy rotation": {
+		"code": "hueshiftyiq # 152.2\nhueshiftccs # 0 1.5\ninvert #\nforeachframe # 0 #fc \"distort #x scale_rotate_translate (540*(idx/#fc))\"\nvegaswave # 0 5 0.04 0 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -9,-16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"crazy slow killed": {
+		"code": "hueshifthsl # 65\npinchpunch # 1\nvegaswave # 0 4 0.1 0 0 0 0 0\nvegaswave # 0 0 0 0 0 4 0.1 0\nspeed # 0.5\nspeed # 0.6\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"crazy slow killed no speed": {
+		"code": "hueshifthsl # 65\npinchpunch # 1\nvegaswave # 0 4 0.1 0 0 0 0 0\nvegaswave # 0 0 0 0 0 4 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ripple pitch": {
+		"code": "hueshifthsl # -90\ndetunnel #\nwiggle # right 30 4 0.75\ntunnel #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mirror twirls": {
+		"code": "haah #\nforeachframe # 0 #fc \"swirl #x (-180*((idx-#fc)/#fc))\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8\nvocoder #$ #$ 256\nvolume #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"cold major": {
+		"code": "gradientmap # rgb(0,5,81),0 rgb(0,50,85),0.125 rgb(0,5,68),0.25 rgb(8,10,211),1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"lost effect": {
+		"code": "hueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8,16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"smurf effect": {
+		"code": "hueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"$ormulator": {
+		"code": "invert #\nhueshifthsl # 180\ninvertlab # 1 0 0\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,7,16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 77114": {
+		"code": "haah #\nreverse #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"hollys g major 1": {
+		"code": "haah #\ninvertlab # 1 0 0\nhueshiftyiq # 90\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"split opposite pitches": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ -{arg:1},{arg:1}\naudioputreplace # #$",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<pitch>"
+	},
+	"split opposite pitches with zero": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ -{arg:1},0,{arg:1}\naudioputreplace # #$",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<pitch>"
+	},
+	"billy gardiners g major 1": {
+		"code": "invert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 9": {
+		"code": "gradientmap # rgb(151,227,0) rgb(0,69,80) rgba(255,255,255,200)\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,5,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"hollys g major": {
+		"code": "gradientmap # rgb(0,128,255) white rgb(0,196,255) white\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -17,-5,0,2,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 74 hsl": {
+		"code": "invert #\nhueshifthsl # 180\npinchpunch # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,9,14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"cry x": {
+		"code": "invert #\nhueshifthsl # 70\nvegaswave # 0 0 0 0 0 3.8 0.098 3.776\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-4.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite rotation wave": {
+		"code": "foreachframe # 0 #fc \"rotate #x (-180*(idx/#fc)) none true\"\nvegaswave # 0 2 -0.1 0 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mirror and other": {
+		"code": "copy # #2\nflop #2\noverlay # #2 0 0 none 0.01 0 true 50\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite crazy slow killed": {
+		"code": "hueshifthsl # -65\npinchpunch # -1\nvegaswave # 0 -4 0.1 0 0 0 0 0\nvegaswave # 0 0 0 0 0 -4 0.1 0\nspeed # 1/0.3\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite crazy slow killed no speed": {
+		"code": "hueshifthsl # -65\npinchpunch # -1\nvegaswave # 0 -4 0.1 0 0 0 0 0\nvegaswave # 0 0 0 0 0 -4 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite ripple pitch": {
+		"code": "hueshifthsl # 90\ndetunnel #\nwiggle # left 30 4 0.75\ntunnel #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite mirror twirls": {
+		"code": "waaw #\nforeachframe # 0 #fc \"swirl #x (-180*(idx/#fc))\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8\nvocoder #$ #$ 256\nvolume #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite cold major": {
+		"code": "gradientmap # rgb(0,5,81),0 rgb(0,50,85),0.125 rgb(0,5,68),0.25 rgb(8,10,211),1\ninvert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"a major": {
+		"code": "invert #\nhueshifthsl # 153\nwaaw #\nswirl # 130\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5.73,10.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 17": {
+		"code": "hueshiftyiq # 25\nswaprgba # bgr\ninvertlab # 1 0 0\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\nffmpeg #$ -af alimiter=30:latency=1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 49": {
+		"code": "haah #\nhooh #\nhueshifthsl # 126\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-0.69\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"split 3 pitches": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ {arg:1},{arg:2},{arg:3}\naudioputreplace # #$",
+		"args": 3,
+		"params": [
+			"{arg:1}",
+			"{arg:2}",
+			"{arg:3}"
+		],
+		"syntax": "<pitch 1> <pitch 2> <pitch 3>"
+	},
+	"g major 100": {
+		"code": "haah #\nswaprgba # bgr\nhueshiftyiq # 100\nvegaswave # 0 3.2 0.05 0.628 0 3.2 0.05 0.628\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 100": {
+		"code": "waaw #\nswaprgba # bgr\nhueshiftyiq # -100\nvegaswave # 0 3.2 0.05 0.628 0 3.2 -0.05 0.628\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"purple yellow": {
+		"code": "loadcube https://cdn.discordapp.com/attachments/1396065153706889266/1425801423693549673/Purple_Yellow.cube?ex=6ad5f98d&is=6ad4a80d&hm=003c6737c88ce40f3203da1e3369f455b36df48d6a9d5d617df95eddfd524517& py\napplylut # py\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 156": {
+		"code": "dobetween # 0 #d/2 \"hueshifthsl #x 180\\nswaprgba #x bgr\\nsnip # #d/2\\nrepeat #\\nreverse #\\nhueshifthsl # 180\\ncopy #x #$x\\nconvert #$x audio/flac\\nmultipitch #$ 0.5,4.5\\naudioputreplace #x #$x\\ncopy # #$\\nconvert #$ audio/flac\\nmultipitch #$ -0.5,-4.5\\naudioputreplace # #$\" yes no",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 17": {
+		"code": "hueshifthsl # -140\nhaah #\npinchpunch # 1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\nffmpeg #$ -af alimiter=15:latency=1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 17": {
+		"code": "hueshifthsl # 140\nwaaw #\npinchpunch # -1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3\nffmpeg #$ -af alimiter=15:latency=1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 1": {
+		"code": "invertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 26": {
+		"code": "huecurvergba # all 0 0.6 1\nacid # 0 2\nhueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 445": {
+		"code": "invert #\nhueshifthsl # 180\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -36\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"last export": {
+		"code": "snip # -{arg:1}",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<duration>"
+	},
+	"pizza pizza effect": {
+		"code": "acid # 0 2\ninvert #\nhueshifthsl # 60\ndetunnel #\nwiggle # right 30 4 0.75\ntunnel #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 10": {
+		"code": "haah #\ninvert #\nhueshifthsl # 180\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,-5,0,4,7,12\nmultipitch #$ 0,-1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 11": {
+		"code": "waaw #\ninvert #\ngray #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 12": {
+		"code": "gradientmap # rgba(0,0,0,0),0.5 black\nhueshifthsl # -45 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -9,-2,3,7,10,15\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 13": {
+		"code": "gradientmap # rgba(0,0,0,0),0.5 black\nswaprgba # bgr\nhueshifthsl # 0 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3,6,9,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 14": {
+		"code": "haah #\nwoow #\ngradientmap # blue black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"old g major 100": {
+		"code": "copy # #2\nhueshifthsl # -36\nhueshifthsl #2 180\nflop #2\ncrop # 0w/2 0h\ncrop #2 0w/2 0h 0w\njoin # #2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 21": {
+		"code": "invert #\nhueshifthsl # 20 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3,2,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 42": {
+		"code": "swaprgba # bgr\ninvertlab # 1 0 0\nhueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3,4,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ccs hue": {
+		"code": "hueshiftyiq # {arg:1}",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<hue>"
+	},
+	"hsl hue": {
+		"code": "hueshifthsl # {arg:1}",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<hue>"
+	},
+	"audio reverse": {
+		"code": "audioreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"video reverse": {
+		"code": "reverse # false",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"invert hue": {
+		"code": "hueshifthsl # 180",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"invert ccs hue": {
+		"code": "hueshiftyiq # 180",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"rgb to bgr": {
+		"code": "swaprgba # bgr",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"rgb to bgr reversed": {
+		"code": "swaprgba # bgr\nreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 305": {
+		"code": "hueshifthsl # -122\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 305": {
+		"code": "hueshifthsl # 122\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 7,-12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"custom major 3": {
+		"code": "hueshifthsl # 165\nhaah #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,0.1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"custom minor 3": {
+		"code": "hueshifthsl # -165\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-0.1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"hollys x major 159": {
+		"code": "flop #\nhueshiftyiq # 180\nhueshifthsl # 180\nswaprgba # bgr\nslide # 1 up\npinchpunch # 1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,7,-4.95,7.05\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"braxtons g major 94": {
+		"code": "invertlab # 1 0 0\nhaah #\nswirl # 40\npinchpunch # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4.5,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"braxtons g major 28": {
+		"code": "hueshifthsl # 55\nflop #\nswirl # -72\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"half luig group": {
+		"code": "hueshifthsl # -22.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -0.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"half mari group": {
+		"code": "hueshifthsl # 22.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"high major": {
+		"code": "hueshifthsl # 120\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"invert": {
+		"code": "invert #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"invert luminosity": {
+		"code": "invertlab # 1 0 0",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"spinslide": {
+		"code": "spin # yes no yes\nslide # 1 left",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 404": {
+		"code": "invert #\ngradientmap # rgba(0,0,0,0),0.5 black\nhueshifthsl # 150 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4,0,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 3": {
+		"code": "gradientmap # rgb(60,0,0) red\ntvsimulator # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"devils blast": {
+		"code": "gradientmap # rgb(60,0,0) red\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,-12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 44 v2": {
+		"code": "swaprgba # bgr\nhueshifthsl # 90\ntvsimulator # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-12,0.3,-11.7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"theuser10s g major 5": {
+		"code": "copy # #2\nif 0 == 0 \"crop # 0w/2 0h 0 0\\nhueshifthsl #2 180\\nwaaw #2\\ntvsimulator #2 0.75\\ncrop #2 0w/2 0h 0w 0\"\njoin # #2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-2.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 25": {
+		"code": "hueshifthav # 45\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1,8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 45": {
+		"code": "hueshifthav # -50\ninvert #\ncreate bg #w #h 0 0 0\nconvert bg video/mp4\nrepeatduration bg #d\nsetfps bg 0fc/0d\noverlay bg # 0 0 white 0.1 0.5\ncopy bg #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2,6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 46": {
+		"code": "invert #\nhueshifthsl # 72\nhaah #\nvegaswave # 0 0 0 0 25 10 0.04 0.8\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 47": {
+		"code": "haah #\nwoow #\ngradientmap # yellow black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 48": {
+		"code": "hueshifthsl # -140\nswirl # -180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 50": {
+		"code": "invertlab # 1 0 0\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 6,9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 52": {
+		"code": "invert #\nhueshifthsl # 50\npinchpunch # 0.5\nslide # 1 up\ntvsimulator # 0.905\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 7.49,12.39\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 136": {
+		"code": "invert #\nhueshifthsl # -140\nswaprgba # bgr\nvegaswave # 0 0 0 0 0 5 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"conga busher": {
+		"code": "waaw #\nhueshiftyiq # -140\ncopy # #$\nconvert #$ audio/flac\naudiobitcrush #$ 16 8 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"tstve2763s g major": {
+		"code": "copy # #2\ninvert #2\ncrop # 0w/2 0h\ncrop #2 0w/2 0h 0w\njoin # #2\nswirl # 100\ncopy # #3\ninvert #3\ncrop # 0w/2 0h\ncrop #3 0w/2 0h 0w\njoin # #3\nhueshifthsl # -90\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7.5,4.5,12.5,16.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 53": {
+		"code": "hueshifthsl # 95.4\nswirl # -100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3.59,5.39\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 54": {
+		"code": "gradientmap # white red black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5,10,14.19\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 55": {
+		"code": "haah #\nswaprgba # bgr\nhueshifthsl # -97.2\nvegaswave # 0 0 0 0 0 5 0.1 0\ncover # 0w 0h\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 200": {
+		"code": "haah #\nhueshifthsl # 60\n\nvegaswave # 0 0 0 0 0 3.8 0.098 3.776\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mikes g major 36": {
+		"code": "haah #\nhueshifthsl # 40\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"169-dxi": {
+		"code": "hueshifthsl # 180\ninvert #\nhuecurvergba # all 0 0.2 0.8 1\ninvert #\ngradientmap # rgb(255,183,0) rgba(0,0,0,0),0.5\nshake # 0 10 true\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -16.9,16.9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"heat overload": {
+		"code": "gray #\nhuecurvergba # red 0.25 1 0 0 0 0.4\nhuecurvergba # green 0 0 0 1 1 1 0.5\nhuecurvergba # blue 0.2 0.85 1 1 0 0.1\ncopy # #$\nconvert #$ audio/flac\naudioboostbass #$\naudioboostbass #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 300": {
+		"code": "flop #\ninvertrgba # 1 1 0\nhueshifthsl # -50.4\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -14,-10,-2,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"are you sure x is in g major": {
+		"code": "hueshifthsl # -76\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,-5,0,4,7,12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 137": {
+		"code": "invertlab # 1 0 0\nswaprgba # bgr\npinchpunch # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,9,14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 400": {
+		"code": "swaprgba # bgr\nhueshifthsl # 105.84\ntvsimulator # 0.75 1 true\nzoom # 2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 116": {
+		"code": "create bg #w #h 0 0 255\nconvert bg video/mp4\nrepeatduration bg #d\nsetfps bg 0fc/0d\noverlay bg # 0 0 white 0.1 0.5\ncopy bg #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12,17,24\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 2763": {
+		"code": "gradientmap # black yellow red magenta blue cyan\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-5,8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 634": {
+		"code": "create bg #w #h 0 0 255\nconvert bg video/mp4\nrepeatduration bg #d\nsetfps bg 0fc/0d\noverlay bg # 0 0 white 0.1 0.5\ncopy bg #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 34,-16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"boul123 major": {
+		"code": "hueshifthsl # 100 50\nvegaswave # 0 0 0 0 0 6.090 0.018 2.692\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"boul123 minor": {
+		"code": "hueshifthsl # -100 -50\nvegaswave # 0 0 0 0 0 6.090 -0.018 2.692\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"22-dxi": {
+		"code": "swaprgba # bgr\nhuecurvergba # all 0 0.2 0.8 1\ngradientmap # rgb(60,0,0) rgba(0,0,0,0),0.5\nshake # 0 10 true\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -19,19\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 6644": {
+		"code": "invert #\nhueshifthsl # -140\nswaprgba # bgr\nvegaswave # 0 0 0 0 0 9.9 0.04 0.8\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 410": {
+		"code": "invert #\nhueshifthsl # 180\nswaprgba # bgr\nvegaswave # 0 0 0 0 0 6.28 0.113 1.196\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"nswidtx": {
+		"code": "flop #\nhueshiftccs # 180\nswaprgba # bgr\nhueshiftccs # 180\nswaprgba # bgr\nhueshiftccs # 180 3 2/3 3\ncontrastmultiply # 1.5\ncopy # #$\nconvert #$ audio/flac\naudiovibrato #$ 10 1\naudiovibrato #$ 10 1\naudiovibrato #$ 10 1\naudiovibrato #$ 10 0.5\naudiopitch #$ 1/1.025\naudioflanger #$ 8 0\naudiopitch #$ 1.025\naudiobitcrush #$ 1 55 0.75 log\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ians g major 19": {
+		"code": "flop #\nhueshiftyiq # 180\nswaprgba # bgr\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1.5,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ltkc map": {
+		"code": "gradientmap # red yellow black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"opposite ltkc map": {
+		"code": "gradientmap # lime rgb(128,0,255) white\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"custom major 333": {
+		"code": "invert #\nrotate # -1 none true\nsharpen # 3\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-0.2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"leaf fall down major": {
+		"code": "flop #\nhueshifthsl # -54\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"i sused x": {
+		"code": "hueshifthsl # 100\ndetunnel #\nwiggle # right 30 1 1/3\ntunnel #\nvegaswave # 25 10 0.02 0 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"zoopals effect v3": {
+		"code": "haah #\npinchpunch # 1\nhueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -11\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wanda rabbit major": {
+		"code": "gradientmap # rgb(255,92,0) white rgb(0,12,210)\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"r major 56": {
+		"code": "huecurvergba # all 0 0.65 1\ngradientmap # rgba(0,0,0,0),0.5 black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"inverted effect": {
+		"code": "hueshifthsl # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 30": {
+		"code": "hueshifthsl # 99\ninvert #\nwaaw #\nswirl # -120\nvegaswave # 25 10 0.025 0 0 0 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-2.25\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"going weirdness every": {
+		"code": "foreachframe # 0 #fc \"set a 1+sin(idx/#fc)\\nstretch #x a 1 true\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3,-8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ians g major 74": {
+		"code": "hueshiftyiq # 240\nswaprgba # bgr\nhueshiftyiq # 240\nswaprgba # bgr\nhueshiftyiq # 120\nswaprgba # bgr\ninvert #\npinchpunch # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 17,10,-14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"split any pitches": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ {arg:1}\naudioputreplace # #$",
+		"args": 1,
+		"params": [
+			"{arg:1}"
+		],
+		"syntax": "<...pitches>"
+	},
+	"freshing equalizer": {
+		"code": "invertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mirror minor": {
+		"code": "haah #\nhueshiftrgb # 20 -20 -20\nhueshifthsv # 180 50\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"horror effect 1.0": {
+		"code": "copy # #2\ninvert #2\nhueshifthsl #2 180\noverlay # #2 0 0 none 0.01 0 true 50\nhuecurvergba # all 0 0 1\nhueshifthsl # 0 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -0.5,-3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"h major 200": {
+		"code": "hueshifthsl # -140\nvegaswave # 0 0 0 0 0 4 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"h minor 200": {
+		"code": "hueshifthsl # 140\nvegaswave # 0 0 0 0 0 -4 0.1 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"cute x": {
+		"code": "hueshifthsl # 140\npinchpunch # -1\npinchpunch # -1\npinchpunch # -1\npinchpunch # 1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 9000": {
+		"code": "huecurvergba # all 0 1 1 1\nlighten # 15\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3,-4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 9000": {
+		"code": "huecurvergba # all 0 0 0 1\ndarken # 15\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-3,4\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wiggle major": {
+		"code": "hueshifthsl # -45\nforeachframe # 0 #fc \"vegaswave #x 0 1 (idx/#fc)*0.1 time*30 0 0 0 0\\nvegaswave #x 0 0 0 0 0 1 (idx/#fc)*0.1 time*30\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -0.34,-1.96,11.65\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 97": {
+		"code": "haah #\nlighten # 15\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 97": {
+		"code": "waaw #\ndarken # 15\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"x is diet": {
+		"code": "resize # 512 512\nmultiply # 3\nresize # 0w 0h\nvegaswave # 30 10 0.02 0 0 0 0 0\nforeachframe # 0 #fc \"vegaswave #x 0 0 0 0 0 2 (idx/#fc)*0.1 time*30\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8\naudioequalizer #$ 15 -10 5 15 20 20\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"t major": {
+		"code": "invert #\nhueshifthsl # 201.6\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"deaf x": {
+		"code": "invert #\nswaprgba # bgr\nhueshifthsl # -144\npinchpunch # 1 1 0.5\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 24,22\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"blind x": {
+		"code": "pinchpunch # -1 0.348 0.389 0.5 0.5\nhaah #\nhueshiftyiq # -45\ninvert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,-3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"deaf major": {
+		"code": "invert #\npinchpunch # 1 0.75 0.5\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 24,22,27,29\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"blind major": {
+		"code": "pinchpunch # 1 0.348 0.389 0.75 0.75\nhaah #\nhueshifthsl # 75.6\ninvert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,-3,-6,-8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"blind and deaf": {
+		"code": "pinchpunch # -1 0.348 0.389 0.5 0.5\nhaah #\nhueshiftyiq # -45\ninvert #\ninvert #\nswaprgba # bgr\nhueshifthsl # -144\npinchpunch # 1 1 0.5\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nvolume #$ 25\naudiobitcrush #$ 32 8 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"pitch black": {
+		"code": "gradientmap # black rgba(0,0,0,0),0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -24\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"pitch white": {
+		"code": "gradientmap # white rgba(0,0,0,0),0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 24\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"waluig group": {
+		"code": "hueshifthsl # -90\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wari group": {
+		"code": "hueshifthsl # 90\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wawaluig group": {
+		"code": "hueshifthsl # -135\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wawari group": {
+		"code": "hueshifthsl # 135\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"painis major": {
+		"code": "pinchpunch # -1 0.348 0.389 0.5 0.5\npinchpunch # -1 0.652 0.389 0.5 0.5\nhueshifthsl # -126\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion g major 4": {
+		"code": "gradientmap # rgba(0,0,0,0),0.5 black\ninvertlab # 1 0 0\nhaah #\naudioreverse #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"confusion real g major 4": {
+		"code": "huecurvergba # all 0 1 0\ninvertlab # 1 0 0\nhaah #\naudioreverse #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"mr krabs major": {
+		"code": "hueshifthsl # -54\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1,-6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"ians g major 81": {
+		"code": "hueshiftyiq # 100\nhueshifthsl # 99\nswaprgba # bgr\nhueshiftyiq # 30\ntvsimulator # 0.93 4\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -9,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"chorded": {
+		"code": "load https://cdn.discordapp.com/attachments/1120656275869536286/1554508796699738243/ChordCarrier.wav?ex=6ad63122&is=6ad4dfa2&hm=1d18a5c515cd2dde9c9ee0f1a1c6b714d1c8ea4fbd0b5bfd03256a46d4f46bbe& chorded\ngradientmap # white blue cyan\ncopy # #$\nconvert #$ audio/flac\nvocoder #$ chorded 96\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"clearer": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1562970878424252447/convert.542ee347.mp3?ex=6adbed90&is=6ada9c10&hm=8cd2c72f6a72a0902a95a3dcf29443dc5dade95a57cde4cb12c2e8e75b009114& clearer\ngradientmap # red blue lime magenta cyan yellow black purple white\ncopy # #$\nconvert #$ audio/flac\nvocoder #$ clearer 96\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"helium": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1563032776180109393/convert.3fdaf5e4.mp3?ex=6adc2735&is=6adad5b5&hm=accc97327ef855e53ea744b226be7077082fbe37f4d9cec73b4e80d5227001fa& helium\ngradientmap # lime cyan blue\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5\nvocoder #$ helium 96\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"elderly": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1563579580038652035/convert.98512c4e.mp3?ex=6ade2475&is=6adcd2f5&hm=bca99a51e2c8d99a0af106905cdfeb57f5c6045013cc9b590295de791230db05& elderly\ngradientmap # magenta black white red\ncopy # #$\nconvert #$ audio/flac\nvocoder #$ elderly 96\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"fhc electronic sounds": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1561504948187963462/convert.5b4e4dd2.mp3?ex=6ad6984f&is=6ad546cf&hm=42b43a8d12c9a62a5c823d6ea6a5bbaeec8a3e6816a16b037ac2fb5ec4566b52& fhc\ninvertlab # 1 0 0\nhaah #\nwoow #\ncopy # #$\nconvert #$ audio/wav\nvocoder #$ fhc 75\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"preview 1280": {
+		"code": "set s {or:{arg:1}|1.85}\nset e {or:{arg:2}|0.85}\nsnip # s s+e loop=true\ncopy # #2\ncopy # #3\nhueshifthsl #2 45\nmultipitch #2 1\nhueshifthsl #3 180\nwaaw #3\ntvsimulator #3 0.75\nmultipitch #3 -2\ncopy #2 #4\ncopy # #5\nsnip #5 0 e/2\ncopy #5 #6\ncopy #5 #7\ncopy #5 #8\ncopy #5 #9\ncopy #5 #10\nhueshifthsl #6 22.5\nflop #6\nmultipitch #6 2\nhueshifthsl #7 45\nmultipitch #7 1\nhueshifthsl #8 120\nflop #8\nmultipitch #8 3\nhueshifthsl #9 180\nmultipitch #9 -2\nflop #10\ncopy #7 #11\ncopy #8 #12\nconcatmultiple # #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "<start> <duration>"
+	},
+	"preview 1583": {
+		"code": "set s {or:{arg:1}|0}\nset e {or:{arg:2}|1.2}\nsnip # s s+e loop=true\ncopy # #2\ncopy # #3\nhueshifthsl #2 45\nmultipitch #2 1\nhueshifthsl #3 202.5\nwaaw #3\ntvsimulator #3 0.75\nmultipitch #3 -2\ncopy #2 #4\nsnip #4 0 e/8\ncopy #4 #4.5\ninvert #4.5\nmultipitch #4.5 7\nconcat #4 #4.5\nrepeat #4 4\ncopy # #5\nsnip #5 0 e/2\ninvert #5\nhueshifthsl #5 21\nmultipitch #5 0.583,7.583\ncopy #5 #5.5\ninvert #5.5\nmultipitch #5.5 7\nconcat #5 #5.5\ncopy #5 #6\ncopy #5 #7\ncopy #5 #8\ncopy #5 #9\ncopy #5 #10\nhueshifthsl #6 22.5\nflop #6\nmultipitch #6 2\nhueshifthsl #7 45\nmultipitch #7 1\nswaprgba #8 rbg\nflop #8\nresize #8 512 512\nrotate #8 -90\ndistort #8 arc 30 90\ncontain #8 640 512\ndistort #8 bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize #8 0w 0h\nflop #8\nmultipitch #8 3\nhueshifthsl #9 202.5\nwaaw #9\ntvsimulator #9 0.75\nmultipitch #9 -2\ncopy #7 #11\ncopy #8 #12\nconcatmultiple # #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12",
+		"args": 2,
+		"params": [
+			"{arg:1}",
+			"{arg:2}"
+		],
+		"syntax": "<start> <duration>"
+	},
+	"g major 7102.9": {
+		"code": "hueshifthsl # 180\npinchpunch # 0.5\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -14,5,10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"braxtons g major 74": {
+		"code": "pinchpunch # -1\npinchpunch # 0.5\nhueshifthsl # 180\ninvert #\nswaprgba # bgr\nhueshiftyiq # 180\nswaprgba # bgr\nhueshiftyiq # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"dma": {
+		"code": "load https://cdn.discordapp.com/attachments/1124758906376302632/1563862655578677268/Gradient.png?ex=6adf2c18&is=6addda98&hm=dda59e90b4d56f6cabce2fe599be477eac94902e02b22224b621727214fdb824& dma\nresize dma #w #h\nblend # dma difference\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -23,-11,1,13\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"angry x": {
+		"code": "haah #\npinchpunch # -1\ninvert #\nswaprgba # bgr\nhueshifthsl # 53\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-2\naudiodistortion #$ 100\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 7": {
+		"code": "hueshiftyiq # -60\nswaprgba # bgr\nflop #\nvegaswave # 0 8 0.018 0 0 8 0.018 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,0.1,3,3.1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 84": {
+		"code": "swaprgba # bgr\nhueshiftyiq # 35\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4.5,4.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"even x discontinued": {
+		"code": "hueshifthsl # -45\nswirl # 360\ntvsimulator # 0.75\nswirl # -360\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"u major": {
+		"code": "invert #\nswaprgba # bgr\nflop #\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 4,5,6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"stereo interlacing": {
+		"code": "gradientmap # rgba(255,0,0,124) rgba(0,255,0,124) rgba(0,0,255,124)\ncopy # #$\nconvert #$ audio/flac\nvocoder #$ #$ 256\nvolume #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"autovocoding": {
+		"code": "gradientmap # blue lime black white\ncopy # #$\nconvert #$ audio/flac\ncopy #$ #$2\nmultipitch #$ -12\nvocoder #$ #$2 256\nvolume #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"group": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1563886958244270232/convert.443e7819.mp3?ex=6adf42ba&is=6addf13a&hm=e8c319f82f05eb78a7d4cbe9722be3924d671d4fbed598c6001b58f3ef4f99e8& group\ngradientmap # black cyan blue black\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\nvocoder #$ group 48\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 275": {
+		"code": "hueshifthsl # 180\ncontain # 0w 0w\nzoom # 1/1.5\nswirl # 225\ncover # 0w 0h\nzoom # 1.5\nwoow #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"low quality": {
+		"code": "bitrate # 50000 1",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 139": {
+		"code": "hueshifthsl # 90\nhueshiftyiq # 90\nswirl # 4\nhaah #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-0.15,3,2.85\naudioreverse #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"weird code": {
+		"code": "hueshifthsl # 180\nwaaw #\nswirl # -140\ncopy # #$\nconvert #$ audio/flac\naudiovibrato #$ 10 1\naudiovibrato #$ 10 1\naudiovibrato #$ 10 1\naudiovibrato #$ 10 0.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"sick x": {
+		"code": "gradientmap # rgb(60,0,0) red\nflop #\ntvsimulator # 0.75\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -24\naudiodistortion #$ 100\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 808": {
+		"code": "hueshifthsl # 180\nswirl # -90\npinchpunch # -1\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1,6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"caught a cold": {
+		"code": "hueshifthsl # 180\ninvert #\ninvertlab # 1 0 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -6,-10\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 22": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1562970878424252447/convert.542ee347.mp3?ex=6adbed90&is=6ada9c10&hm=8cd2c72f6a72a0902a95a3dcf29443dc5dade95a57cde4cb12c2e8e75b009114& clearer\ninvert #\nhueshifthsl # 180\nforeachframe # 0 #fc \"rotate #x rand(-10,10) none true\"\nshake # 50 30 true\nzoom # 1.3\ncopy # #$\nconvert #$ audio/flac\nvocoder #$ clearer 96\nmultipitch #$ -2\naudiodistortion #$ 100\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"sponge": {
+		"code": "lightrays # 0.6 1\ngradientmap # rgb(255,176,0) yellow rgb(0,186,255) cyan\ntimecode # type=frames\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 3,9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 125": {
+		"code": "foreachframe # 0 #fc \"copy #x #x2\\nswaprgba #x2 bgr\\noverlay #x #x2 opacity=(idx/#fc)*100\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 125": {
+		"code": "foreachframe # 0 #fc \"copy #x #x2\\nswaprgba #x bgr\\noverlay #x #x2 opacity=(idx/#fc)*100\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,14\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"asleep x": {
+		"code": "invert #\nhueshifthsl # 90\nvegaswave # 0 0 0 0 0 20.76 0.042 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3,-6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"c major": {
+		"code": "invert #\nhueshiftyiq # 78.367\nvegaswave # 0 5.4 0.05 0 0 5.4 0.05 0\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2.5\nrepeat #$\naudiowahwah #$ 10 30\naudiodelay #$ -0.075\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 2015": {
+		"code": "copy # #$\nconvert #$ audio/flac\nmultipitch #$ -24,-17,-12,-8,-5,0\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 27": {
+		"code": "tvsimulator # 0.5\ngray #\nacid # 0 2\ngradientmap # rgb(0,216,0) yellow\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,-8,-5,0,2,3,4,6,7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 24": {
+		"code": "create bg #w #h 255 128 0\nblend # bg difference\nvegaswave # 0 0 0 0 0 9.9 0.04 0.8\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2,3,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 31": {
+		"code": "hueshifthsl # -45\ngradientmap # rgba(0,0,0,0),0.5 black\ngradientmap # rgb(60,60,0) rgb(255,255,128)\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 2,6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 32": {
+		"code": "tvsimulator # 0.45\nslide # 10 up\nvegaswave # 0 0 0 0 0 32 0.01 0\nswirl # 90\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8,-6,-3,0\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 33": {
+		"code": "invert #\ngradientmap # rgb(0,60,0) lime\ngradientmap # magenta rgba(0,0,0,0),0.5\ntvsimulator # 0.66\nslide # 0.5 up\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -7,0,4.5,8.67\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 29": {
+		"code": "gradientmap # rgba(0,0,0,0),0.5 black\nswaprgba # bgr\nhueshifthsl # -137 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5,7,9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"something": {
+		"code": "invert #\nswaprgba # bgr\nforeachframe # 0 #fc \"vegaswave #x 0 10 0.04 0.8 0 1 0.5 (idx/#fc)*6.283\"\ncopy # #$\nconvert #$ audio/flac\nrepeat #$\nspeed #$ 8\nspeed #$ 0.5\nspeed #$ 0.5\nspeed #$ 0.5\nmultipitch #$ -24\naudiodistortion #$ 100\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 34": {
+		"code": "invert #\nhueshifthsl # -90\npinchpunch # 1\nvegaswave # 15 8 0.015 0 0 0 0 0\npixel # 4 true\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4,0,5\naudiodistortion #$ 15 1 7500\naudioequalizer #$ 10 0 10 10 15 15 20 20\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 89": {
+		"code": "hueshifthsl # 180\nhaah #\nresize # 512 512\nrotate # -90\ndistort # arc 30 90\ncontain # 640 512\ndistort # bilinear_forward 88 70 -116 -74 60 303 -48 395 550 30 642 -24 553 382 642 368\nresize # 0w 0h\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -24,-23\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 35": {
+		"code": "invert #\ngradientmap # blue rgba(0,0,0,0) red\ntvsimulator # 0.66\nslide # 0.5 up\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,-5,0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 36": {
+		"code": "gradientmap # rgb(183,125,0),0 rgb(90,56,0),0.75 white,1\ntvsimulator # 0.85\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -8,-3,0,2,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 36 v2": {
+		"code": "pinchpunch # -1 0.348 0.389 0.5 0.5\nhaah #\ninvert #\nhueshifthsl # 180\nhueshiftyiq # 180\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -10,0,10\naudiodistortion #$ 50\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 38": {
+		"code": "gradientmap # yellow rgba(0,0,0,0),0.5\nslide # 0.5 up\nswirl # 100\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,2,4,6,9,12,16\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 39": {
+		"code": "gradientmap # white red black\ntvsimulator # 0.75\nlightrays # 0.1 0.6\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -12,-5,0,4,7,12\nmultipitch #$ 3,9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"electrodynamix": {
+		"code": "gradientmap # white lime cyan blue\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5,2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 37": {
+		"code": "invert #\nhueshifthsl # -120\ninvertlab # 1 0 0\nswaprgba # bgr\nhueshifthsl # 72\ninvert #\nhueshifthsl # 108\nswirl # -2\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,-0.15,5,4.85\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"logobotomys g major 31": {
+		"code": "hueshiftyiq # 54.321\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,3.5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"x minor 159": {
+		"code": "gradientmap # black lime white\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 5,-7\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"original g major 22": {
+		"code": "hueshiftccs # 0 0 0.96 1.06\nhuecurvergba # blue 0 0.66 1\nsolarize #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 0,10.17,20.34\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"poorstretched": {
+		"code": "copy # #2\ngray #2\nblend # #2 difference\ncopy # #$\nconvert #$ audio/flac\npaulstretch #$ 1 0.01\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 37": {
+		"code": "invert #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 11.53\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"random": {
+		"code": "{set:a|{js:let fx = JSON.parse(discord.variables.fx);\nlet f = Object.keys(fx).filter(x => fx.args == 0);\nconsole.log(f[Math.floor(Math.random()*f.length)])}}{set:code|{traversejson:[\"{get:f}\"]|{get:fx}}}{eval:{get:code}}",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"jayden galipo major": {
+		"code": "hueshifthsl # -144\ngradientmap # rgba(0,0,0,0),0.25 rgb(151,59,0),0.35 rgb(230,236,236),0.4 rgba(0,0,0,0),0.5 white,0.6 rgba(0,0,0,0),0.7\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 41": {
+		"code": "invert #\nhueshifthsl # -45\nhooh #\nwaaw #\nswirl # 40\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4.5,0,5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g minor 41": {
+		"code": "invert #\nhueshifthsl # 45\nhooh #\nwaaw #\nswirl # -40\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 4.5,0,-5\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"x is partying": {
+		"code": "hueshifthsl # 180\ngradientmap # rgba(0,0,0,0),0.5 black\nforeachframe # 0 #fc \"vegaswave #x 0 (idx/#fc)*32 (idx/#fc)*0.5 (idx/#fc)*6.283 0 (idx/#fc)*32 (idx/#fc)*0.5 (idx/#fc)*6.283\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"green solarize": {
+		"code": "gradientmap # black rgb(0,195,0) rgb(0,94,0) black",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"folked": {
+		"code": "hueshifthsl # -120 100 100\naudioreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"squiggly mirror": {
+		"code": "haah #\nforeachframe # 0 #fc \"vegaswave #x 0 1.71 0.092 0 0 (idx/#fc)*13.9 0.092 0\"",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"number confusion": {
+		"code": "timecode #\nwaaw #\npinchpunch # -1\npinchpunch # 1\naudioreverse #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"positivenull99s wat x": {
+		"code": "foreachframe # 0 #fc \"set a 1+sin(idx/#fc)\\nstretch #x a 1 true\\ncopy #x #x2\\ngradientmap #x2 rgba(0,0,0,0),0.5 black\\noverlay #x #x2 opacity=(idx/#fc)*100\"",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"upside down": {
+		"code": "flip #\ncopy # a\nconvert a audio/wav\naudiotoimage a mode=spectrogram scale=log low=27.5 high=20000\nflip a\nimagetoaudio a mode=spectrogram scale=log low=27.5 high=20000 duration=max(min(#d,30),0.5)\nspeed a ad/#d\naudioputreplace # a",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"i revived x": {
+		"code": "pinchpunch # -1\nhueshifthsl # 140\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"loudness": {
+		"code": "gradientmap # rgb(255,128,0) black red\ncopy # #$\nconvert #$ audio/flac\ncopy # #$\nconvert #$ audio/flac\naudioequalizer #$ -50 -25 5 15 20 -25 -50\naudiodistortion #$ 100\naudioputreplace # #$\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"might confuse you": {
+		"code": "copy # #2\nreverse #2\nblend # #2 difference\nvolume #",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"inverted b&w reversed high pitched": {
+		"code": "invert #\ngray #\nreverse #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 12\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"crazy diamond": {
+		"code": "lightrays # 0.6 1\ntvsimulator # 0.75\nlighten # 10\ncontrastmultiply # 1.25\ngradientmap # blue red lime white\ncopy # #$\nconvert #$ audio/flac\naudiochorus #$ voices=3 delay=100 rate=1.5 depth=80\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"vocoded with intel inside": {
+		"code": "load https://cdn.discordapp.com/attachments/1508784841800421436/1571634269174890608/youtube-hmtV_KqgJNA.6e713ff7.mp4?ex=6afb71f9&is=6afa2079&hm=7a0bb8b5665a2fbd8693aec29b7dfae0604e71eb9b733a2a77966cf60d6e739f& intel\nspeed intel inteld/#d\nresize intel #w #h\ncopy # #$\nconvert #$ audio/flac\nblend # intel screen\nvocoder intel #$\naudioputreplace # intel",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"x is high": {
+		"code": "foreachframe # 0 #fc \"vegaswave #x 0 (idx/#fc)*32 (idx/#fc)*0.5 (idx/#fc)*6.283 0 (idx/#fc)*32 (idx/#fc)*0.5 (idx/#fc)*6.283\"\ncopy # #$\nconvert #$ audio/flac\naudiovibrato #$ points=\"0,-1 1,1\" semitones=12 frequency=1\nspeed #$ 1.1\nrepeatduration #$ #d\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wavey x": {
+		"code": "tvsimulator # 0.75\nvegaswave # 0 5.4 0.05 0 0 5.4 0.05 0\ngradientmap # cyan rgba(0,0,0,0),0.5\ncopy # #$\nconvert #$ audio/flac\nspeed #$ 1.1\naudiovibrato #$ points=\"0,0 0.05,1 0.45,1 0.55,-1 0.95,-1 1,0\" semitones=12 frequency=9\nrepeatduration #$ #d\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"swirl broken major": {
+		"code": "hueshifthsl # 180 30\nhooh #\nswirl # -160\ntvsimulator # 0.95 4\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\nrepeatduration #$ #d\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"dark blue and lime solarize": {
+		"code": "gradientmap # rgb(255,92,0) white rgb(0,12,210)\ninvertlab # 1 0 0\nhueshifthsl # -162\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"green & blue major": {
+		"code": "gradientmap # lime rgb(0,130,255) white\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -2\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"bad one": {
+		"code": "gradientmap # rgb(128,0,255) rgba(0,0,0,0) yellow",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"2 x sound like green splaat": {
+		"code": "foreachframe # 0 #fc \"copy #x #x2\\ncreate bg #w #h 102 102 153\\noverlay #x bg opacity=(idx/#fc)*100\\nresize #x2 (1-(idx/#fc))*(#x2w-1)+1 #x2h\\noverlay #x #x2\"\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"weird woople": {
+		"code": "vegaswave # 2.5 2 0.1 3.142 0 0 0 0\nwaaw # 33\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -5.825\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 1072": {
+		"code": "invert #\nhueshifthsl # 135\nzoom # 0.5\nrotate # -45 none true\nhaah #\nrotate # -45 none true\nzoom # 2\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -1\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 105": {
+		"code": "hueshifthsl # -126\nwoow #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -3\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"field day major": {
+		"code": "hueshifthsl # 180\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -6\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 65": {
+		"code": "flop #\ninvert #\ngradientmap # rgba(0,0,0,0),0.5 yellow\ngradientmap # rgba(0,0,0,128) rgba(150,130,0,128) rgba(255,255,0,128)\nspeed # 2**(6/12) true",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"v major": {
+		"code": "invert #\nhueshifthsl # 180\nwaaw #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -9,3,9\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"wat x": {
+		"code": "invert #\nget # width w\nget # height h\nforeachframe # 0 #fc \"set a abs(0.5-(idx/#fc))*((w*2)-1)+1\\nresize #x a h\\ncontain #x w h\\nif idx/#fc >= 0.5 \\\"flop #x\\\"\"",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 85": {
+		"code": "flop #\ninvert #\ngradientmap # rgba(0,0,0,0),0.5 yellow\ngradientmap # rgba(0,0,255,128) rgba(150,130,0,128) rgba(255,255,0,128)\nspeed # 2**(6/12) true",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	},
+	"g major 75": {
+		"code": "invert #\nswaprgba # grb\nflop #\ntvsimulator # 0.65\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ -4,-3,-2,-1,0\naudioputreplace # #$",
+		"args": 0,
+		"params": [],
+		"syntax": ""
+	}
+}
