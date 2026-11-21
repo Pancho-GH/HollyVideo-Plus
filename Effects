@@ -1983,7 +1983,7 @@
 		"syntax": ""
     },
 	"g major 23 (2017)": {
-		"code": "hueshifthsl # -180\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8.5 -5\naudioputreplace # #$",
+		"code": "hueshifthsl # -180\nflop #\ncopy # #$\nconvert #$ audio/flac\nmultipitch #$ 8.5,-5\naudioputreplace # #$",
 		"args": 0,
 		"params": [],
 		"syntax": ""
